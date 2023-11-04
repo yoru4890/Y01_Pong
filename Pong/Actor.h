@@ -16,11 +16,11 @@ protected:
 	float mX;
 	float mY;
 	float mOpacity;
-
+	
 public:
-	Actor() = delete;
-	Actor(D2DFramework* pFramework, LPCWSTR filename);
-	Actor(D2DFramework* pFramework, LPCWSTR filename, float x, float y, float opacity = 1.0f);
+	explicit Actor() = delete;
+	explicit Actor(D2DFramework* pFramework, LPCWSTR filename);
+	explicit Actor(D2DFramework* pFramework, LPCWSTR filename, float x, float y, float opacity = 1.0f);
 
 	virtual ~Actor();
 
