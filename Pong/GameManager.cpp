@@ -1,13 +1,15 @@
 #include "GameManager.h"
+#include "Player.h"
 
 HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
     HRESULT hr;
     hr = D2DFramework::Initialize(hInstance, title, width, height);
     ThrowIfFailed(hr, "Failed in D2DFramework::Initailize()");
-
-    const D2D_POINT_2F WALL_TOP_LEFT({ 100.0f,75.0f }), WALL_BOTTOM_RIGHT({ 924.0f,693.0f });
     
+    const D2D_POINT_2F WALL_TOP_LEFT { 100.0f, 75.0f };
+    const D2D_POINT_2F WALL_BOTTOM_RIGHT { 924.0f, 693.0f };
+
     for (float x = WALL_TOP_LEFT.x; x <= WALL_BOTTOM_RIGHT.x; x++)
     {
         mWalls.push_back(std::make_shared<Actor>(this, L"Images/wall.png", x, WALL_TOP_LEFT.y));
@@ -25,6 +27,7 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
         mWalls.push_back(std::make_shared<Actor>(this, L"Images/wall.png", (WALL_TOP_LEFT.x + WALL_BOTTOM_RIGHT.x)/2, y));
     }
 
+    mPlayerBar = std::make_shared<Player>(this);
     return S_OK;
 }
 
@@ -39,6 +42,10 @@ void GameManager::Render()
         wall->Draw();
     }
 
+    CheckInput();
+
+    mPlayerBar->Draw();
+
     HRESULT hr = mspRenderTarget->EndDraw();
 
     if (hr == D2DERR_RECREATE_TARGET)
@@ -49,7 +56,25 @@ void GameManager::Render()
 
 void GameManager::Release()
 {
+    mPlayerBar.reset();
     mWalls.clear();
 
     D2DFramework::Release();
+}
+
+void GameManager::CheckInput()
+{
+    Player* p = static_cast<Player*>(mPlayerBar.get());
+    p->mVelocity = 0.0f;
+
+    if (GetAsyncKeyState(VK_UP) & 0x8000)
+    {
+        p->mVelocity = 4.0f;
+    }
+    else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+    {
+        p->mVelocity = -4.0f;
+    }
+
+    p->Move();
 }
