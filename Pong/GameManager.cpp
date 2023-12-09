@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "Player.h"
+#include "Ball.h"
 
 HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -28,6 +29,8 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
     }
 
     mPlayerBar = std::make_shared<Player>(this);
+
+    mBall = std::make_shared<Ball>(this);
     return S_OK;
 }
 
@@ -45,6 +48,7 @@ void GameManager::Render()
     CheckInput();
 
     mPlayerBar->Draw();
+    mBall->Draw();
 
     HRESULT hr = mspRenderTarget->EndDraw();
 
@@ -56,6 +60,7 @@ void GameManager::Render()
 
 void GameManager::Release()
 {
+    mBall.reset();
     mPlayerBar.reset();
     mWalls.clear();
 
@@ -65,6 +70,8 @@ void GameManager::Release()
 void GameManager::CheckInput()
 {
     Player* p = static_cast<Player*>(mPlayerBar.get());
+    Ball* pB = static_cast<Ball*>(mBall.get());
+
     p->mVelocity = 0.0f;
 
     if (GetAsyncKeyState(VK_UP) & 0x8000)
@@ -77,4 +84,5 @@ void GameManager::CheckInput()
     }
 
     p->Move();
+    pB->Move();
 }

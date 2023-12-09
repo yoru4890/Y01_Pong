@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
     <ClCompile Include="D2DFramework.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="BitmapManager.h" />
     <ClInclude Include="com_exception.h" />
     <ClInclude Include="D2DFramework.h" />
