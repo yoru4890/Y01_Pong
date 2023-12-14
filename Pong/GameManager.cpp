@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "Ball.h"
+#include "Constants.h"
 
 HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -8,8 +9,8 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
     hr = D2DFramework::Initialize(hInstance, title, width, height);
     ThrowIfFailed(hr, "Failed in D2DFramework::Initailize()");
     
-    const D2D_POINT_2F WALL_TOP_LEFT { 100.0f, 75.0f };
-    const D2D_POINT_2F WALL_BOTTOM_RIGHT { 924.0f, 693.0f };
+    const D2D_POINT_2F WALL_TOP_LEFT { GameConstants::TOP_LEFT_X, GameConstants::TOP_LEFT_Y };
+    const D2D_POINT_2F WALL_BOTTOM_RIGHT { GameConstants::BOTTOM_RIGHT_X, GameConstants::BOTTOM_RIGHT_Y};
 
     for (float x = WALL_TOP_LEFT.x; x <= WALL_BOTTOM_RIGHT.x; x++)
     {
@@ -23,7 +24,7 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
         mWalls.push_back(std::make_shared<Actor>(this, L"Images/wall.png", WALL_BOTTOM_RIGHT.x, y));
     }
 
-    for (float y = WALL_TOP_LEFT.y; y <= WALL_BOTTOM_RIGHT.y; y += 32.55f)
+    for (float y = WALL_TOP_LEFT.y; y <= WALL_BOTTOM_RIGHT.y; y += GameConstants::MIDDLE_WALL_GAP)
     {
         mWalls.push_back(std::make_shared<Actor>(this, L"Images/wall.png", (WALL_TOP_LEFT.x + WALL_BOTTOM_RIGHT.x)/2, y));
     }
@@ -76,11 +77,11 @@ void GameManager::CheckInput()
 
     if (GetAsyncKeyState(VK_UP) & 0x8000)
     {
-        p->mVelocity = 4.0f;
+        p->mVelocity = GameConstants::PLAYER_VELOCITY;
     }
     else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
     {
-        p->mVelocity = -4.0f;
+        p->mVelocity = -GameConstants::PLAYER_VELOCITY;
     }
 
     p->Move();

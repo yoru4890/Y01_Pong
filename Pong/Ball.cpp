@@ -1,11 +1,10 @@
 #include "Ball.h"
+#include "Constants.h"
 
-Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png")
+Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png"), mVelocity{INITIAL_VELOCITY}
 {
-	mX = 500.0f;
-	mY = 372.0f;
-
-	mVelocity = 1.0f;
+	mX = (GameConstants::BOTTOM_RIGHT_X - GameConstants::TOP_LEFT_X) / 2;
+	mY = (GameConstants::BOTTOM_RIGHT_Y - GameConstants::TOP_LEFT_Y) / 2;
 }
 
 void Ball::Draw()
@@ -29,23 +28,23 @@ void Ball::Move()
 	auto nx = mX + moveVector.x * mVelocity;
 	auto ny = mY + moveVector.y * mVelocity;
 
-	if (nx >= 116.0f && nx <= 900.0f)
+	if (nx >= GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK && nx <= GameConstants::BOTTOM_RIGHT_X - SIZE_X)
 	{
 		mX = nx;
 	}
 	else
 	{
 		moveVector.x *= -1;
-		mVelocity++;
+		mVelocity += VELOCITY_INCREMENT;
 	}
 
-	if (ny >= 91.0f && ny <= 669.0f)
+	if (ny >= GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK && ny <= GameConstants::BOTTOM_RIGHT_Y - SIZE_Y)
 	{
 		mY = ny;
 	}
 	else
 	{
 		moveVector.y *= -1;
-		mVelocity++;
+		mVelocity += VELOCITY_INCREMENT;
 	}
 }

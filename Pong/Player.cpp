@@ -1,11 +1,10 @@
 #include "Player.h"
+#include "Constants.h"
 
-Player::Player(D2DFramework* pFramework) : Actor(pFramework, L"Images/bar.png")
+Player::Player(D2DFramework* pFramework) : Actor(pFramework, L"Images/bar.png"), mVelocity{0.0f}
 {
-	mX = 924.0f - 66.0f;
-	mY = (75.0f + 693.0f) / 2 -60.0f;
-
-	mVelocity = 0.0f;
+	mX = GameConstants::BOTTOM_RIGHT_X - POS_X;
+	mY = (GameConstants::TOP_LEFT_Y + GameConstants::BOTTOM_RIGHT_Y - SIZE_Y) / 2;
 }
 
 void Player::Draw()
@@ -29,7 +28,7 @@ void Player::Move()
 {
 	auto ny = mY + UPVECTOR.y * mVelocity;
 
-	if (ny >= 91.0f && ny <= 573.0f)
+	if (ny >= GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK && ny <= GameConstants::BOTTOM_RIGHT_Y - SIZE_Y)
 	{
 		mY = ny;
 	}
