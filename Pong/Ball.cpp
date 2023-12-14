@@ -48,3 +48,8 @@ void Ball::Move()
 		mVelocity += VELOCITY_INCREMENT;
 	}
 }
+
+float Ball::GetPosY()
+{
+	return mY + SIZE_Y / 2;
+}

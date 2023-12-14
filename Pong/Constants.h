@@ -8,5 +8,7 @@ namespace GameConstants
 	const float BOTTOM_RIGHT_Y{ 693.0f };
 	const float MIDDLE_WALL_GAP{ 32.55f };
 	const float PLAYER_VELOCITY{ 4.0f };
+	const float ENEMY_VELOCITY{ 4.0f };
 	const float WALL_THICK{ 16.0f };
+	const float ENEMY_BALL_GAP{ 10.0f };
 }

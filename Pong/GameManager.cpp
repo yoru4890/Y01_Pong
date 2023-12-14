@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Ball.h"
 #include "Constants.h"
 
@@ -30,8 +31,10 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
     }
 
     mPlayerBar = std::make_shared<Player>(this);
+    mEnemyBar = std::make_shared<Enemy>(this);
 
     mBall = std::make_shared<Ball>(this);
+
     return S_OK;
 }
 
@@ -49,6 +52,7 @@ void GameManager::Render()
     CheckInput();
 
     mPlayerBar->Draw();
+    mEnemyBar->Draw();
     mBall->Draw();
 
     HRESULT hr = mspRenderTarget->EndDraw();
@@ -62,6 +66,7 @@ void GameManager::Render()
 void GameManager::Release()
 {
     mBall.reset();
+    mEnemyBar.reset();
     mPlayerBar.reset();
     mWalls.clear();
 
@@ -71,6 +76,7 @@ void GameManager::Release()
 void GameManager::CheckInput()
 {
     Player* p = static_cast<Player*>(mPlayerBar.get());
+    Enemy* pE = static_cast<Enemy*>(mEnemyBar.get());
     Ball* pB = static_cast<Ball*>(mBall.get());
 
     p->mVelocity = 0.0f;
@@ -84,6 +90,13 @@ void GameManager::CheckInput()
         p->mVelocity = -GameConstants::PLAYER_VELOCITY;
     }
 
+    const float ENEMY_Y{ pE->GetPosY() }, BALL_Y{ pB->GetPosY()};
+
+    if (abs(ENEMY_Y - BALL_Y) < GameConstants::ENEMY_BALL_GAP) { pE->mVelocity = 0.0f; }
+    else if (pE->GetPosY() > pB->GetPosY()) { pE->mVelocity = GameConstants::ENEMY_VELOCITY; }
+    else { pE->mVelocity = -GameConstants::ENEMY_VELOCITY; }
+
     p->Move();
+    pE->Move();
     pB->Move();
 }
