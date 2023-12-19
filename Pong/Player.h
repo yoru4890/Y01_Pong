@@ -16,5 +16,8 @@ public:
 	virtual void Draw() override;
 
 	void Move();
+
+	float GetPosX();
+	float GetPosY();
 };
 

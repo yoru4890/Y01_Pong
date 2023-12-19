@@ -40,7 +40,17 @@ void Enemy::Move(float ballY)
 
 }
 
+float Enemy::GetPosX()
+{
+	return mX;
+}
+
 float Enemy::GetPosY()
+{
+	return mY;
+}
+
+float Enemy::GetMiddleY()
 {
 	return mY + SIZE_Y / 2;
 }

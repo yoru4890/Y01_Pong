@@ -17,6 +17,9 @@ public:
 
 	void Move(float ballY);
 
+
+	float GetPosX();
 	float GetPosY();
+	float GetMiddleY();
 };
 

@@ -11,4 +11,6 @@ namespace GameConstants
 	const float ENEMY_VELOCITY{ 4.0f };
 	const float WALL_THICK{ 16.0f };
 	const float ENEMY_BALL_GAP{ 10.0f };
+	const float BAR_SIZE_WIDTH{ 24.0f };
+	const float BAR_SIZE_HEIGHT{ 120.0f };
 }

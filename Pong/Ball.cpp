@@ -23,13 +23,33 @@ void Ball::Draw()
 	pRT->DrawBitmap(mpBitmap, rect, mOpacity);
 }
 
-void Ball::Move()
+void Ball::Move(float playerX, float playerY, float enemyX, float enemyY)
 {
-	auto nx = mX + moveVector.x * mVelocity;
-	auto ny = mY + moveVector.y * mVelocity;
+	auto nx{ mX + moveVector.x * mVelocity };
+	auto ny{ mY + moveVector.y * mVelocity };
 
 	if (nx >= GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK && nx <= GameConstants::BOTTOM_RIGHT_X - SIZE_X)
 	{
+		if (playerY <= ny + SIZE_Y && playerY + GameConstants::BAR_SIZE_HEIGHT >= ny)
+		{
+			if (nx + SIZE_X >= playerX)
+			{
+				moveVector.x *= -1;
+				mVelocity += VELOCITY_INCREMENT;
+				nx = playerX - SIZE_X;
+			}
+		}
+
+		if (enemyY <= ny + SIZE_Y && enemyY + GameConstants::BAR_SIZE_HEIGHT >= ny)
+		{
+			if (nx <= enemyX + GameConstants::BAR_SIZE_WIDTH)
+			{
+				moveVector.x *= -1;
+				mVelocity += VELOCITY_INCREMENT;
+				nx = enemyX + GameConstants::BAR_SIZE_WIDTH;
+			}
+		}
+
 		mX = nx;
 	}
 	else
@@ -37,6 +57,7 @@ void Ball::Move()
 		moveVector.x *= -1;
 		mVelocity += VELOCITY_INCREMENT;
 	}
+
 
 	if (ny >= GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK && ny <= GameConstants::BOTTOM_RIGHT_Y - SIZE_Y)
 	{

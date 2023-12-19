@@ -33,3 +33,13 @@ void Player::Move()
 		mY = ny;
 	}
 }
+
+float Player::GetPosX()
+{
+	return mX;
+}
+
+float Player::GetPosY()
+{
+	return mY;
+}

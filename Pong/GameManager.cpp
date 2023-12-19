@@ -90,12 +90,10 @@ void GameManager::CheckInput()
         p->mVelocity = -GameConstants::PLAYER_VELOCITY;
     }
 
-    const float ENEMY_Y{ pE->GetPosY() }, BALL_Y{ pB->GetPosY()};
-
-    if (pE->GetPosY() > pB->GetPosY()) { pE->mVelocity = GameConstants::ENEMY_VELOCITY; }
+    if (pE->GetMiddleY() > pB->GetPosY()) { pE->mVelocity = GameConstants::ENEMY_VELOCITY; }
     else { pE->mVelocity = -GameConstants::ENEMY_VELOCITY; }
 
     p->Move();
     pE->Move(pB->GetPosY());
-    pB->Move();
+    pB->Move(p->GetPosX(), p->GetPosY(), pE->GetPosX(), pE->GetPosY());
 }
