@@ -92,11 +92,10 @@ void GameManager::CheckInput()
 
     const float ENEMY_Y{ pE->GetPosY() }, BALL_Y{ pB->GetPosY()};
 
-    if (abs(ENEMY_Y - BALL_Y) < GameConstants::ENEMY_BALL_GAP) { pE->mVelocity = 0.0f; }
-    else if (pE->GetPosY() > pB->GetPosY()) { pE->mVelocity = GameConstants::ENEMY_VELOCITY; }
+    if (pE->GetPosY() > pB->GetPosY()) { pE->mVelocity = GameConstants::ENEMY_VELOCITY; }
     else { pE->mVelocity = -GameConstants::ENEMY_VELOCITY; }
 
     p->Move();
-    pE->Move();
+    pE->Move(pB->GetPosY());
     pB->Move();
 }

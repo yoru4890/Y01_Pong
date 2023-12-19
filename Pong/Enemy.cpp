@@ -23,14 +23,21 @@ void Enemy::Draw()
 	pRT->DrawBitmap(mpBitmap, rect, mOpacity);
 }
 
-void Enemy::Move()
+void Enemy::Move(float ballY)
 {
-	auto ny = mY + UPVECTOR.y * mVelocity;
+	auto ny{ mY + UPVECTOR.y * mVelocity };
 
 	if (ny >= GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK && ny <= GameConstants::BOTTOM_RIGHT_Y - SIZE_Y)
 	{
-		mY = ny;
+		auto middleY{ ny + SIZE_Y / 2 };
+		if ((mVelocity > 0 && middleY < ballY) || (mVelocity < 0 && middleY > ballY))
+		{
+			middleY = ballY;
+			ny = middleY - SIZE_Y / 2;
+		}
+			mY = ny;
 	}
+
 }
 
 float Enemy::GetPosY()
