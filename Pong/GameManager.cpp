@@ -96,4 +96,5 @@ void GameManager::CheckInput()
     p->Move();
     pE->Move(pB->GetPosY());
     pB->Move(p->GetPosX(), p->GetPosY(), pE->GetPosX(), pE->GetPosY());
+    pB->CheckGoal();
 }

@@ -1,10 +1,16 @@
 #include "Ball.h"
 #include "Constants.h"
+#include <random>
+#include <cmath>
 
-Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png"), mVelocity{INITIAL_VELOCITY}
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<int> distribution(1,2);
+
+Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png"), mVelocity{INITIAL_VELOCITY}, isGoal{false}
 {
-	mX = (GameConstants::BOTTOM_RIGHT_X - GameConstants::TOP_LEFT_X) / 2;
-	mY = (GameConstants::BOTTOM_RIGHT_Y - GameConstants::TOP_LEFT_Y) / 2;
+	mX = (GameConstants::BOTTOM_RIGHT_X + GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK) / 2;
+	mY = (GameConstants::BOTTOM_RIGHT_Y + GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK) / 2;
 }
 
 void Ball::Draw()
@@ -54,8 +60,7 @@ void Ball::Move(float playerX, float playerY, float enemyX, float enemyY)
 	}
 	else
 	{
-		moveVector.x *= -1;
-		mVelocity += VELOCITY_INCREMENT;
+		isGoal = true;
 	}
 
 
@@ -67,6 +72,23 @@ void Ball::Move(float playerX, float playerY, float enemyX, float enemyY)
 	{
 		moveVector.y *= -1;
 		mVelocity += VELOCITY_INCREMENT;
+	}
+}
+
+void Ball::CheckGoal()
+{
+	if (isGoal)
+	{
+		mX = (GameConstants::BOTTOM_RIGHT_X + GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK) / 2;
+		mY = (GameConstants::BOTTOM_RIGHT_Y + GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK) / 2;
+		mVelocity = INITIAL_VELOCITY;
+		
+		float ranX{ static_cast<float>(distribution(gen)) - 1.5f };
+		float ranY{ static_cast<float>(distribution(gen)) - 1.5f };
+
+		moveVector.x = ranX;
+		moveVector.y = ranY;
+		isGoal = false;
 	}
 }
 
