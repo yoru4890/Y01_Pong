@@ -7,7 +7,7 @@ std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_int_distribution<int> distribution(1,2);
 
-Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png"), mVelocity{INITIAL_VELOCITY}, isGoal{false}
+Ball::Ball(D2DFramework* pFramework) : Actor(pFramework, L"Images/ball.png"), mVelocity{ INITIAL_VELOCITY }, isGoal{ false }, scorePlayer{}, scoreEnemy{}
 {
 	mX = (GameConstants::BOTTOM_RIGHT_X + GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK) / 2;
 	mY = (GameConstants::BOTTOM_RIGHT_Y + GameConstants::TOP_LEFT_Y + GameConstants::WALL_THICK) / 2;
@@ -61,6 +61,14 @@ void Ball::Move(float playerX, float playerY, float enemyX, float enemyY)
 	else
 	{
 		isGoal = true;
+		if (nx < (GameConstants::BOTTOM_RIGHT_X + GameConstants::TOP_LEFT_X + GameConstants::WALL_THICK) / 2)
+		{
+			scorePlayer++;
+		}
+		else
+		{
+			scoreEnemy++;
+		}
 	}
 
 
@@ -95,4 +103,14 @@ void Ball::CheckGoal()
 float Ball::GetPosY()
 {
 	return mY + SIZE_Y / 2;
+}
+
+int Ball::GetScorePlayer()
+{
+	return scorePlayer;
+}
+
+int Ball::GetScoreEnemy()
+{
+	return scoreEnemy;
 }

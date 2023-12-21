@@ -3,6 +3,9 @@
 #include "Enemy.h"
 #include "Ball.h"
 #include "Constants.h"
+#include "PlayerScores.h"
+#include "EnemyScores.h"
+
 
 HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, UINT height)
 {
@@ -30,6 +33,9 @@ HRESULT GameManager::Initialize(HINSTANCE hInstance, LPCWSTR title, UINT width, 
         mWalls.push_back(std::make_shared<Actor>(this, L"Images/wall.png", (WALL_TOP_LEFT.x + WALL_BOTTOM_RIGHT.x)/2, y));
     }
 
+    mPlayerScores = std::make_shared<PlayerScores>(this);
+    mEnemyScores = std::make_shared<EnemyScores>(this);
+
     mPlayerBar = std::make_shared<Player>(this);
     mEnemyBar = std::make_shared<Enemy>(this);
 
@@ -51,6 +57,8 @@ void GameManager::Render()
 
     CheckInput();
 
+    mPlayerScores->Draw();
+    mEnemyScores->Draw();
     mPlayerBar->Draw();
     mEnemyBar->Draw();
     mBall->Draw();
@@ -68,6 +76,8 @@ void GameManager::Release()
     mBall.reset();
     mEnemyBar.reset();
     mPlayerBar.reset();
+    mPlayerScores.reset();
+    mEnemyScores.reset();
     mWalls.clear();
 
     D2DFramework::Release();
@@ -78,6 +88,8 @@ void GameManager::CheckInput()
     Player* p = static_cast<Player*>(mPlayerBar.get());
     Enemy* pE = static_cast<Enemy*>(mEnemyBar.get());
     Ball* pB = static_cast<Ball*>(mBall.get());
+    PlayerScores* pPS = static_cast<PlayerScores*>(mPlayerScores.get());
+    EnemyScores* pES = static_cast<EnemyScores*>(mEnemyScores.get());
 
     p->mVelocity = 0.0f;
 
@@ -97,4 +109,6 @@ void GameManager::CheckInput()
     pE->Move(pB->GetPosY());
     pB->Move(p->GetPosX(), p->GetPosY(), pE->GetPosX(), pE->GetPosY());
     pB->CheckGoal();
+    pPS->SetScore(pB->GetScorePlayer());
+    pES->SetScore(pB->GetScoreEnemy());
 }

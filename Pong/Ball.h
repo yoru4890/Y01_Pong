@@ -9,9 +9,10 @@ private:
 	const float SIZE_X{ 24.0f };
 	const float SIZE_Y{ 24.0f };
 	bool isGoal{};
+	float mVelocity{};
 
-public:
-	float mVelocity;
+	int scorePlayer{};
+	int scoreEnemy{};
 
 public:
 	explicit Ball(D2DFramework* pFramework);
@@ -23,5 +24,8 @@ public:
 	void CheckGoal();
 
 	float GetPosY();
+
+	int GetScorePlayer();
+	int GetScoreEnemy();
 };
 

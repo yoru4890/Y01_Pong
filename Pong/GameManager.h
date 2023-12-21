@@ -8,8 +8,8 @@ class GameManager : public D2DFramework
 {
 private:
 	std::vector<std::shared_ptr<Actor>> mWalls;
-	std::vector<std::shared_ptr<Actor>> mPlayerScore;
-	std::vector<std::shared_ptr<Actor>> mEnemyScore;
+	std::shared_ptr<Actor> mPlayerScores;
+	std::shared_ptr<Actor> mEnemyScores;
 	std::shared_ptr<Actor> mPlayerBar;
 	std::shared_ptr<Actor> mEnemyBar;
 	std::shared_ptr<Actor> mBall;

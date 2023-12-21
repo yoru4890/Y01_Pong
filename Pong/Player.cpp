@@ -21,7 +21,6 @@ void Player::Draw()
 
 	D2D1_RECT_F rect{ 0,0,static_cast<float>(size.width), static_cast<float>(size.height) };
 	pRT->DrawBitmap(mpBitmap, rect, mOpacity);
-
 }
 
 void Player::Move()
